@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Service History | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Service History</h1><div class="table-responsive mt-3"><table class="table"><thead><tr><th>Booking</th><th>Vehicle</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+{% for b in bookings %}<tr><td>AC{{ '%05d'|format(b.id) }}</td><td>{{ b.vehicle.brand }} {{ b.vehicle.model }}</td><td>{{ b.booking_date }}</td><td>₹{{ '%.2f'|format(b.final_cost or b.estimated_cost) }}</td><td>{{ b.status }}</td></tr>{% else %}<tr><td colspan="5">No completed services.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

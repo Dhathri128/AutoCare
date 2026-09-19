@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Mechanics | Admin{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Mechanics</h1><div class="row g-4">
+<div class="col-lg-5"><div class="card"><div class="card-body"><h5>Add Mechanic</h5><form method="post">
+<input class="form-control mb-2" name="name" placeholder="Name" required><input class="form-control mb-2" name="phone" placeholder="Phone"><input class="form-control mb-2" name="specialization" placeholder="Specialization"><input class="form-control mb-3" type="number" name="experience" placeholder="Experience (years)"><button class="btn btn-dark w-100">Add</button>
+</form></div></div></div>
+<div class="col-lg-7"><div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Specialization</th><th>Experience</th><th>Status</th></tr></thead><tbody>{% for m in mechanics %}<tr><td>{{ m.name }}</td><td>{{ m.specialization }}</td><td>{{ m.experience }} yrs</td><td>{{ m.status }}</td></tr>{% endfor %}</tbody></table></div></div>
+</div></div>
+{% endblock %}

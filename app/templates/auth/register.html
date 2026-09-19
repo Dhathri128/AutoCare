@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Register | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5"><div class="row justify-content-center"><div class="col-md-6">
+<div class="card shadow border-0"><div class="card-body p-4">
+<h2>Create your AutoCare account</h2>
+<form method="post" class="mt-4">
+<input class="form-control mb-3" name="name" placeholder="Full name" required>
+<input class="form-control mb-3" type="email" name="email" placeholder="Email" required>
+<input class="form-control mb-3" name="phone" placeholder="Phone">
+<input class="form-control mb-3" type="password" name="password" placeholder="Password" required minlength="6">
+<button class="btn btn-warning w-100">Create Account</button>
+</form>
+</div></div></div></div></div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Offers | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1>Offers</h1>
+  <div class="row g-4 mt-2">
+    {% for offer in offers %}
+    <div class="col-md-6"><div class="card shadow-sm border-0"><div class="card-body">
+      <span class="badge bg-warning text-dark">{{ offer.discount_percent|round|int }}% OFF</span>
+      <h4 class="mt-3">{{ offer.title }}</h4><p>{{ offer.description }}</p>
+      <code>{{ offer.code }}</code><div class="small text-muted mt-2">Valid until {{ offer.valid_until }}</div>
+    </div></div></div>
+    {% else %}<p>No offers.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

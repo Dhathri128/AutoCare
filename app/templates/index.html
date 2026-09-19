@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}AutoCare | Vehicle Service{% endblock %}
+{% block content %}
+<section class="hero py-5">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="badge bg-warning text-dark mb-3">Professional Vehicle Care</span>
+        <h1 class="display-4 fw-bold">Your car deserves <span class="text-warning">AutoCare.</span></h1>
+        <p class="lead">Book trusted vehicle services, track your service status, receive invoices and keep your complete service history in one place.</p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-warning btn-lg me-2">Book a Service</a>
+        <a href="{{ url_for('main.services') }}" class="btn btn-outline-light btn-lg">Explore Services</a>
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0">
+        <div class="hero-card p-4 rounded-4">
+          <h4>Simple service flow</h4>
+          <p>Book → Assign Mechanic → Service → Invoice → Payment → Review</p>
+          <div class="progress mb-3"><div class="progress-bar bg-warning" style="width:75%"></div></div>
+          <small>Transparent vehicle servicing from start to finish.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4"><h2>Popular Services</h2><a href="{{ url_for('main.services') }}">View all</a></div>
+  <div class="row g-4">
+    {% for service in services[:6] %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm service-card">
+        <div class="card-body">
+          <div class="icon-box">🔧</div>
+          <h5>{{ service.name }}</h5>
+          <p class="text-muted">{{ service.description }}</p>
+          <div class="fw-bold fs-5">₹{{ '%.0f'|format(service.price) }}</div>
+          <small class="text-muted">{{ service.estimated_duration }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container pb-5">
+  <h2 class="mb-4">Current Offers</h2>
+  <div class="row g-3">
+    {% for offer in offers %}
+    <div class="col-md-6">
+      <div class="offer-card p-4 rounded-4">
+        <span class="badge bg-dark">{{ offer.code }}</span>
+        <h4 class="mt-2">{{ offer.title }}</h4>
+        <p>{{ offer.description }}</p>
+        <strong>{{ offer.discount_percent|round|int }}% OFF</strong>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted">No offers currently.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

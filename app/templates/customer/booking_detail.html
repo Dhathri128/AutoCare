@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Booking #{{ booking.id }} | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5">
+<div class="d-flex justify-content-between"><div><h1>Booking #AC{{ '%05d'|format(booking.id) }}</h1><p class="text-muted">{{ booking.vehicle.brand }} {{ booking.vehicle.model }} · {{ booking.vehicle.registration_number }}</p></div><span class="badge bg-dark fs-6 align-self-start">{{ booking.status }}</span></div>
+<div class="row g-4 mt-2">
+<div class="col-lg-8"><div class="card"><div class="card-body"><h5>Service Progress</h5>
+<div class="timeline">
+{% for status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service','Completed','Invoice Generated','Paid'] %}
+<div class="timeline-item {% if status == booking.status %}active{% elif status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service','Completed','Invoice Generated','Paid'] and ((booking.status=='Paid') or (booking.status=='Invoice Generated' and status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service','Completed','Invoice Generated']) or (booking.status=='Completed' and status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service','Completed']) or (booking.status=='In Service' and status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service']) or (booking.status=='Inspection' and status in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection']) or (booking.status=='Vehicle Received' and status in ['Pending','Confirmed','Assigned','Vehicle Received']) or (booking.status=='Assigned' and status in ['Pending','Confirmed','Assigned']) or (booking.status=='Confirmed' and status in ['Pending','Confirmed']) or (booking.status=='Pending' and status=='Pending')) %}done{% endif %}">{{ status }}</div>
+{% endfor %}
+</div></div></div>
+<div class="card mt-3"><div class="card-body"><h5>Services</h5>{% for item in booking.services %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ item.service.name }}</span><strong>₹{{ '%.2f'|format(item.price) }}</strong></div>{% endfor %}<div class="d-flex justify-content-between pt-3"><strong>Estimated/Final</strong><strong>₹{{ '%.2f'|format(booking.final_cost or booking.estimated_cost) }}</strong></div></div></div>
+</div>
+<div class="col-lg-4"><div class="card"><div class="card-body"><h5>Appointment</h5><p>{{ booking.booking_date }}<br>{{ booking.booking_time }}</p><p><strong>Mechanic:</strong> {{ booking.mechanic.name if booking.mechanic else 'Pending assignment' }}</p><p>{{ booking.problem_description or 'No notes added.' }}</p>
+{% if booking.invoice %}<a class="btn btn-dark w-100 mb-2" href="{{ url_for('customer.invoice_pdf', booking_id=booking.id) }}">Download Invoice PDF</a><div class="alert alert-light">Payment: <strong>{{ booking.invoice.payment_status }}</strong><br>Total: ₹{{ '%.2f'|format(booking.invoice.total) }}</div>{% endif %}
+</div></div>
+{% if booking.status in ['Completed','Paid'] and not booking.review %}<div class="card mt-3"><div class="card-body"><h5>Rate your service</h5><form method="post" action="{{ url_for('customer.review', booking_id=booking.id) }}"><select name="rating" class="form-select mb-2">{% for n in range(5,0,-1) %}<option value="{{ n }}">{{ n }} / 5</option>{% endfor %}</select><textarea name="comment" class="form-control mb-2" placeholder="Your review"></textarea><button class="btn btn-warning w-100">Submit Review</button></form></div></div>{% endif %}
+</div></div></div>
+{% endblock %}

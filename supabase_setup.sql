@@ -1,0 +1,11 @@
+-- AutoCare Supabase setup notes
+-- The Flask app creates the application tables with SQLAlchemy db.create_all().
+--
+-- Create the Storage bucket from Supabase Dashboard:
+-- Storage -> New bucket -> invoices
+--
+-- For server-side uploads using SUPABASE_SERVICE_ROLE_KEY, Storage authorization
+-- is performed server-side. Keep the service role key secret.
+--
+-- If you later expose Storage/Data API operations to browsers, create explicit
+-- RLS policies with least privilege before allowing access.

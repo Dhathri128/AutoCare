@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}My Vehicles | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5">
+<div class="d-flex justify-content-between align-items-center"><h1>My Vehicles</h1><a href="{{ url_for('customer.book_service') }}" class="btn btn-warning">Book Service</a></div>
+<div class="row g-4 mt-2">
+<div class="col-lg-5"><div class="card shadow-sm"><div class="card-body"><h5>Add Vehicle</h5>
+<form method="post">
+<input class="form-control mb-2" name="registration_number" placeholder="Registration number" required>
+<input class="form-control mb-2" name="brand" placeholder="Brand" required>
+<input class="form-control mb-2" name="model" placeholder="Model" required>
+<input class="form-control mb-2" type="number" name="year" placeholder="Year">
+<select class="form-select mb-2" name="fuel_type"><option>Petrol</option><option>Diesel</option><option>Electric</option><option>Hybrid</option></select>
+<input class="form-control mb-3" name="color" placeholder="Color">
+<button class="btn btn-dark w-100">Add Vehicle</button>
+</form></div></div></div>
+<div class="col-lg-7"><div class="row g-3">
+{% for v in vehicles %}<div class="col-md-6"><div class="card h-100"><div class="card-body"><h5>{{ v.brand }} {{ v.model }}</h5><p>{{ v.registration_number }}</p><p class="text-muted">{{ v.year }} · {{ v.fuel_type }} · {{ v.color }}</p>
+<form method="post" action="{{ url_for('customer.delete_vehicle', vehicle_id=v.id) }}"><button class="btn btn-sm btn-outline-danger">Delete</button></form></div></div></div>{% else %}<p>No vehicles.</p>{% endfor %}
+</div></div></div></div>
+{% endblock %}

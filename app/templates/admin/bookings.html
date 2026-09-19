@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Bookings | Admin{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Manage Bookings</h1>
+{% for b in bookings %}<div class="card mb-3 shadow-sm"><div class="card-body">
+<div class="row align-items-center"><div class="col-lg-4"><h5>AC{{ '%05d'|format(b.id) }} · {{ b.customer.name }}</h5><p class="mb-1">{{ b.vehicle.brand }} {{ b.vehicle.model }} — {{ b.vehicle.registration_number }}</p><small>{{ b.booking_date }} {{ b.booking_time }}</small></div>
+<div class="col-lg-8"><form method="post" action="{{ url_for('admin.update_booking', booking_id=b.id) }}" class="row g-2">
+<div class="col-md-4"><select class="form-select" name="status">{% for s in ['Pending','Confirmed','Assigned','Vehicle Received','Inspection','In Service','Completed','Invoice Generated','Paid','Cancelled'] %}<option {% if b.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div>
+<div class="col-md-3"><select class="form-select" name="mechanic_id"><option value="">Mechanic</option>{% for m in mechanics %}<option value="{{ m.id }}" {% if b.mechanic_id==m.id %}selected{% endif %}>{{ m.name }}</option>{% endfor %}</select></div>
+<div class="col-md-3"><input class="form-control" name="final_cost" type="number" step="0.01" value="{{ b.final_cost or b.estimated_cost }}"></div>
+<div class="col-md-2"><button class="btn btn-dark w-100">Update</button></div>
+</form></div></div>
+</div></div>{% else %}<p>No bookings.</p>{% endfor %}
+</div>
+{% endblock %}

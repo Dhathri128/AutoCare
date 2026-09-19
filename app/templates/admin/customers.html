@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Customers | Admin{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Customers</h1><div class="table-responsive mt-3"><table class="table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Vehicles</th><th>Joined</th></tr></thead><tbody>
+{% for c in customers %}<tr><td>{{ c.name }}</td><td>{{ c.email }}</td><td>{{ c.phone }}</td><td>{{ c.vehicles|length }}</td><td>{{ c.created_at.strftime('%Y-%m-%d') }}</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

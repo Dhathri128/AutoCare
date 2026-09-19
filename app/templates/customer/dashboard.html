@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Customer Dashboard | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-4">
+<h1>Welcome, {{ current_user.name }} 👋</h1><p class="text-muted">Manage your vehicles and service appointments.</p>
+<div class="row g-3 mb-4">
+<div class="col-md-4"><div class="stat-card"><small>Vehicles</small><h2>{{ vehicles|length }}</h2></div></div>
+<div class="col-md-4"><div class="stat-card"><small>Recent Bookings</small><h2>{{ bookings|length }}</h2></div></div>
+<div class="col-md-4"><a href="{{ url_for('customer.book_service') }}" class="btn btn-warning btn-lg w-100 h-100">+ Book Service</a></div>
+</div>
+<div class="d-flex gap-2 mb-4 flex-wrap">
+<a class="btn btn-dark" href="{{ url_for('customer.vehicles') }}">My Vehicles</a>
+<a class="btn btn-outline-dark" href="{{ url_for('customer.bookings') }}">Bookings</a>
+<a class="btn btn-outline-dark" href="{{ url_for('customer.history') }}">Service History</a>
+<a class="btn btn-outline-dark" href="{{ url_for('customer.invoices') }}">Invoices</a>
+</div>
+<h4>My Vehicles</h4>
+<div class="row g-3 mb-4">
+{% for v in vehicles %}
+<div class="col-md-6"><div class="card"><div class="card-body"><h5>🚗 {{ v.brand }} {{ v.model }}</h5><p class="mb-1">{{ v.registration_number }}</p><small>{{ v.year }} · {{ v.fuel_type }} · {{ v.color }}</small></div></div></div>
+{% else %}<p>No vehicles yet.</p>{% endfor %}
+</div>
+<h4>Recent Bookings</h4>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>#</th><th>Vehicle</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>
+{% for b in bookings %}<tr><td>AC{{ '%05d'|format(b.id) }}</td><td>{{ b.vehicle.brand }} {{ b.vehicle.model }}</td><td>{{ b.booking_date }} {{ b.booking_time }}</td><td><span class="badge bg-{{ 'success' if b.status in ['Completed','Paid'] else 'warning text-dark' }}">{{ b.status }}</span></td><td><a href="{{ url_for('customer.booking_detail', booking_id=b.id) }}">Track</a></td></tr>{% endfor %}
+</tbody></table></div>
+</div>
+{% endblock %}

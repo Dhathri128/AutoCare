@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Book Service | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-8">
+<div class="card shadow-sm"><div class="card-body p-4"><h2>Book a Service</h2>
+{% if not vehicles %}<div class="alert alert-warning">Add a vehicle first.</div>{% else %}
+<form method="post">
+<label class="form-label">Vehicle</label><select class="form-select mb-3" name="vehicle_id" required>{% for v in vehicles %}<option value="{{ v.id }}">{{ v.brand }} {{ v.model }} — {{ v.registration_number }}</option>{% endfor %}</select>
+<label class="form-label">Services</label>
+<div class="row g-2 mb-3">{% for s in services %}<div class="col-md-6"><label class="border rounded p-3 d-block"><input type="checkbox" name="service_ids" value="{{ s.id }}" class="me-2"> <strong>{{ s.name }}</strong><br><small>₹{{ '%.0f'|format(s.price) }} · {{ s.estimated_duration }}</small></label></div>{% endfor %}</div>
+<div class="row"><div class="col-md-6"><label class="form-label">Date</label><input class="form-control" type="date" name="booking_date" required></div><div class="col-md-6"><label class="form-label">Time</label><input class="form-control" type="time" name="booking_time" required></div></div>
+<label class="form-label mt-3">Problem / Notes</label><textarea class="form-control mb-3" name="problem_description" rows="4" placeholder="Describe any issue with your vehicle"></textarea>
+<button class="btn btn-warning btn-lg w-100">Confirm Booking</button>
+</form>{% endif %}
+</div></div></div></div></div>
+{% endblock %}

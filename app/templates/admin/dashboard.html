@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-4">
+<h1>AutoCare Admin Dashboard</h1><p class="text-muted">Manage the entire service center.</p>
+<div class="row g-3">
+{% for label,value in [('Customers',customers),('Vehicles',vehicles),('Bookings',bookings),('Pending',pending),('Mechanics',mechanics),('Services',services)] %}
+<div class="col-6 col-md-4 col-lg-2"><div class="stat-card"><small>{{ label }}</small><h3>{{ value }}</h3></div></div>{% endfor %}
+<div class="col-md-4"><div class="stat-card"><small>Paid Revenue</small><h3>₹{{ '%.0f'|format(revenue) }}</h3></div></div>
+</div>
+<div class="d-flex gap-2 flex-wrap my-4">
+<a class="btn btn-dark" href="{{ url_for('admin.bookings') }}">Bookings</a><a class="btn btn-outline-dark" href="{{ url_for('admin.customers') }}">Customers</a><a class="btn btn-outline-dark" href="{{ url_for('admin.mechanics') }}">Mechanics</a><a class="btn btn-outline-dark" href="{{ url_for('admin.services') }}">Services</a><a class="btn btn-outline-dark" href="{{ url_for('admin.parts') }}">Parts</a><a class="btn btn-outline-dark" href="{{ url_for('admin.invoices') }}">Invoices</a><a class="btn btn-outline-dark" href="{{ url_for('admin.offers') }}">Offers</a><a class="btn btn-outline-dark" href="{{ url_for('admin.reviews') }}">Reviews</a>
+</div>
+<div class="card"><div class="card-body"><h5>Recent Bookings</h5><div class="table-responsive"><table class="table"><thead><tr><th>#</th><th>Customer</th><th>Vehicle</th><th>Date</th><th>Status</th></tr></thead><tbody>
+{% for b in recent %}<tr><td>AC{{ '%05d'|format(b.id) }}</td><td>{{ b.customer.name }}</td><td>{{ b.vehicle.brand }} {{ b.vehicle.model }}</td><td>{{ b.booking_date }}</td><td>{{ b.status }}</td></tr>{% endfor %}
+</tbody></table></div></div></div>
+</div>
+{% endblock %}

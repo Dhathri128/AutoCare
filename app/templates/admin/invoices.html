@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Invoices | Admin{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Invoices & Payments</h1>
+{% for b in bookings %}<div class="card mb-3"><div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+<div><strong>AC{{ '%05d'|format(b.id) }}</strong> · {{ b.customer.name }} · {{ b.vehicle.registration_number }}<br><small>{{ b.booking_date }} · ₹{{ '%.2f'|format(b.final_cost or b.estimated_cost) }}</small></div>
+<div>{% if b.invoice %}<span class="badge bg-{{ 'success' if b.invoice.payment_status=='Paid' else 'warning text-dark' }}">{{ b.invoice.payment_status }}</span> <strong class="ms-2">₹{{ '%.2f'|format(b.invoice.total) }}</strong>{% if b.invoice.payment_status != 'Paid' %}<form method="post" action="{{ url_for('admin.mark_paid', invoice_id=b.invoice.id) }}" class="d-inline ms-2"><button class="btn btn-sm btn-success">Mark Paid</button></form>{% endif %}{% else %}<form method="post" action="{{ url_for('admin.create_invoice', booking_id=b.id) }}"><button class="btn btn-sm btn-dark">Generate Invoice</button></form>{% endif %}</div>
+</div></div>{% else %}<p>No bookings.</p>{% endfor %}
+</div>
+{% endblock %}

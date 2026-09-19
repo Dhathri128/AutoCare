@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Invoices | AutoCare{% endblock %}
+{% block content %}
+<div class="container py-5"><h1>Invoices</h1><div class="row g-3 mt-2">
+{% for b in bookings %}{% if b.invoice %}<div class="col-md-6"><div class="card"><div class="card-body"><h5>{{ b.invoice.invoice_number }}</h5><p>Booking AC{{ '%05d'|format(b.id) }} · {{ b.booking_date }}</p><h4>₹{{ '%.2f'|format(b.invoice.total) }}</h4><p>Status: {{ b.invoice.payment_status }}</p><a href="{{ url_for('customer.invoice_pdf', booking_id=b.id) }}" class="btn btn-dark">Download PDF</a></div></div></div>{% endif %}{% else %}<p>No invoices.</p>{% endfor %}
+</div></div>
+{% endblock %}
